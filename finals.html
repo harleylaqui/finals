@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finals</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <style>
+        div{
+            border-width:1px;
+            border-style:solid;
+            border-color:rgb(0, 0, 0);
+            padding: 10px 0px 10px 0px;
+           
+        }
+        form{
+            background:rgb(255, 255, 255);
+            padding: 10px 0px 10px 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="user-form">
+        <div>
+            <input type="radio" name="firstChoice" id="choice1" value="GET">
+            <label for="choice1">GET</label><br>
+            <input type="radio" name="firstChoice" id="choice2" value="POST">
+            <label for="choice2">POST</label><br>
+        </div>
+
+        <div>
+            <input type="radio" name="secondChoice" id="choice3" value="The">
+            <label for="choice3">The</label><br>
+            <input type="radio" name="secondChoice" id="choice4" value="Happy">
+            <label for="choice4">Happy</label><br>
+            <input type="radio" name="secondChoice" id="choice5" value="Sad">
+            <label for="choice5">Sad</label><br>
+            <input type="radio" name="secondChoice" id="choice6" value="Lazy">
+            <label for="choice6">Lazy</label><br>
+        </div>
+
+        <div>
+            <input type="radio" name="thirdChoice" id="choice7" value="Cat">
+            <label for="choice7">Cat</label><br>
+            <input type="radio" name="thirdChoice" id="choice8" value="Dog">
+            <label for="choice8">Dog</label><br>
+            <input type="radio" name="thirdChoice" id="choice9" value="Fox">
+            <label for="choice9">Fox</label><br>
+            <input type="radio" name="thirdChoice" id="choice10" value="Bear">
+            <label for="choice10">Bear</label><br>
+        </div>
+        <button type="button" class="btn btn-success" onclick="apiChecker()">Perform Operation</button>
+    </form>
+    <h1>Output Here:</h1>
+    <h2 id="result"></h2>    
+
+    <script>
+        async function radioChecker(){
+            var result2 = document.getElementsByName("secondChoice")
+            for(choice of result2){
+                if(choice.checked){
+                    var result2 = choice.getAttribute("value")
+                }
+            }
+            var result3 = document.getElementsByName("thirdChoice")
+            for(choice of result3){    
+                if(choice.checked){
+                    var result3 = choice.getAttribute("value")
+                }
+            }
+            const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+                method: "POST", 
+                body: JSON.stringify({
+                    body: result2 + " " + result3
+                }),
+                headers:{
+                    "Content-type":"application/json; charset=UTF-8"
+                }
+            })
+            if(!response.ok){
+                throw new Error("Something Went Wrong" + response.statusText)
+            }
+            const data = await response.json()
+            console.log(data.body)
+            document.getElementById("result").innerHTML = data.body
+        }
+            async function getResponse(){
+            const response = await fetch("https://jsonplaceholder.typicode.com/posts/8");
+            if(!response.ok){
+                throw new Error("Something Went Wrong" + response.statusText)
+            }
+            const data = await response.json()
+            console.log(data)
+            document.getElementById("result").innerHTML = data.title
+        }
+        function apiChecker(){
+            if(document.getElementById("choice1").checked){
+                getResponse()
+            }
+            if(document.getElementById("choice2").checked){
+                radioChecker()
+            }
+        }
+    </script>
+</body> 
+</html>
